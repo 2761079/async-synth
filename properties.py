@@ -1,5 +1,5 @@
 """Creation de la formaule ltl"""
-def gathering(n,k):
+def ltlgathering(n,k):
 		ltlFile = open("ltlFile.ltl",'w')
 		#fairness
 		for i in range(k):
@@ -24,5 +24,8 @@ def gathering(n,k):
 		ltlFile.close()
 		
 
-
+def uppaalQuery():
+		queryFile = open("gathering.q",'w')
+		queryFile.write("control: A<>Process.goal")
+		queryFile.close()
 

@@ -1,3 +1,6 @@
+from SS import *
+from properties import *
+
 
 Strategies = []
 Minimum = 2**50
@@ -11,10 +14,6 @@ def gen_init():
 def set_init():
 	"""cree a partir de la lsite des positions initale un ensemble pour etre modifié"""
 	return set(POS_INIT)
-
-
-def SS(C,F):
-	return True
 
 
 def retire_etat_init(E, T):#à remplir 
@@ -37,8 +36,12 @@ def proc_MC(S):
 	return i, etats # (i, S)
 
 
-def AsyncSynth(C, F):
-	"""parcourt l'arbre de toutes les stratégies, il stoke au passage les stratégies avec le moins d'états à retirer"""
+def AsyncSynth(C=[], F=[],n,k):
+	"""parcourt l'arbre de toutes les stratégies, il stoke au passage les stratégies avec le moins d'états à retirer: n = ring_size, k = nb_robots"""
+	#first time -> creation 
+	if len(C)<1 && len(F)<1:
+		ltlgathering(n,k)
+		uppaalQuery()
 	boolSync, strat = SS(C, F)
 	if (not boolSync): #la synthese n'a pas marché
 		return
