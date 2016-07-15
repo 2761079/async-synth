@@ -2,8 +2,10 @@ from SS import *
 from properties import *
 from traduction import *
 
-Strategies = []
-Minimum = 2**50
+from threading import RLock
+from multiprocessing import Process
+
+strategies = Minimum()
 POS_INIT = []
 
 def gen_init():
@@ -36,23 +38,38 @@ def proc_MC(S):
 	return i, etats # (i, S)
 
 
-def AsyncSynth(C=[], F=[],n,k):
+def AsyncSynth(C=[], F=[]):
 	"""parcourt l'arbre de toutes les stratégies, il stoke au passage les stratégies avec le moins d'états à retirer: n = ring_size, k = nb_robots"""
-	#first time -> creation 
+	"""#first time -> creation 
 	if len(C)<1 && len(F)<1:
 		ltlgathering(n,k)
-		uppaalQuery()
-	boolSync, strat = SS(C, F)
-	if (not boolSync): #la synthese n'a pas marché
+		uppaalQuery()"""
+	boolSS, strat = SS(C, F)
+	if (not boolSS): #la synthese n'a pas marché
 		return
 	i, E = proc_MC(strat)
-	if (Minimum == i)
-		Strategies.append((strat,E))
-	else if i < Minimum :
-		Strategies = [(strat, E)]
-		Minimum = i
+	strategies.add(i, (strat,E))
 	for a in S:
-		Strategies = AsyncSynth(C+[a], F)
+		pr=Process(AsyncSynth, C+[a], F)
+		pr.start()
+		pr.join()#ligne a commenter (resp décomenter) pour activer (resp desactiver) la paralellisation
 		F+=[a]
 
 
+
+class Minimum(Thread):
+    """chargé de stoker les stratégies les plus éficaces"""
+
+    def __init__(self):
+		Strategies = []
+		minimum = 2**50
+
+        mutex = RLock()
+    def add(self, min, El):
+        """met a jour la liste des stratégies"""
+        with mutex :
+        	if (minimum == min)
+				Strategies.append((strat,E))
+			else if i < minimum :
+				Strategies = [El]
+				minimum = min
