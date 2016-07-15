@@ -1,6 +1,6 @@
 from SS import *
 from properties import *
-
+from traduction import *
 
 Strategies = []
 Minimum = 2**50
@@ -54,3 +54,5 @@ def AsyncSynth(C=[], F=[],n,k):
 	for a in S:
 		Strategies = AsyncSynth(C+[a], F)
 		F+=[a]
+
+

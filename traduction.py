@@ -3,6 +3,13 @@ from synthNK import *
 from writing import *
 from pprint import *
 
+def strategy(fichier):
+	with open(fichier,'r') as stratFile:
+		for line in stratFile:
+			if "Property is satisfied" in line:
+				return True
+	return False
+
 def getconf(config):
 	conf = []
 	for gp in config.groups():
