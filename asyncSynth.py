@@ -56,6 +56,16 @@ def AsyncSynth(C, F, n, k):
 		F+=[a]
 
 
+def StartAsyncSynth(n,k):
+	"""Procédure pour lancer la synthèse"""
+	ltlgathering(n,k)
+	uppaalQuery()
+
+	gen_init()
+	
+	AsyncSynth()
+
+
 
 class Minimum:
 	"""chargé de stoker les stratégies les plus éficaces"""
