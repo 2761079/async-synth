@@ -21,7 +21,7 @@ def set_init():
 def retire_etat_init(E, T):#à remplir 
 	"""Retire l'état inital donné par la trace dans la Stratégie a verifier"""
 	E.remove(T)
- 	return E
+	return E
 
 
 def proc_MC(S):
@@ -32,7 +32,7 @@ def proc_MC(S):
 	while i < Minimum or T[0]== False :
 		etats = retire_etat_init(etats,T[1])
 		T = MC((S, etats))
-		i++
+		i+=1
 	if T[0]==False :
 		return i+1, etats
 	return i, etats # (i, S)
@@ -57,19 +57,19 @@ def AsyncSynth(C=[], F=[]):
 
 
 
-class Minimum(Thread):
-    """chargé de stoker les stratégies les plus éficaces"""
+class Minimum:
+	"""chargé de stoker les stratégies les plus éficaces"""
 
-    def __init__(self):
-		Strategies = []
+	def __init__(self):
+		strats = list()
 		minimum = 2**50
 
-        mutex = RLock()
-    def add(self, min, El):
-        """met a jour la liste des stratégies"""
-        with mutex :
-        	if (minimum == min)
-				Strategies.append((strat,E))
-			else if i < minimum :
-				Strategies = [El]
+		mutex = RLock()
+	def add(self, min, El):
+		"""met a jour la liste des stratégies"""
+		with mutex :
+			if (minimum == min) :
+				strats.append((strat,E))
+			elif i < minimum :
+				strats = [El]
 				minimum = min

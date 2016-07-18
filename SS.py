@@ -2,26 +2,25 @@ import sys
 """ Synchoronous synthesis call"""
 
 def getStrat(constraint):
-""" return the strat of the constraint"""
-	if(len(constraint)!=2)
+	""" return the strat of the constraint"""
+	if(len(constraint)!=2):
 		sys.exit("Contraint systax error")
 	return constraint[1]
 
 def getConf(constraint):
-""" return the configuration of the constraint"""
+	""" return the configuration of the constraint"""
 	
 
-def SS(constraintList=[], forceList=[],n,k): #n is the size of the ring, k the number of robots
-""" synchronous synthesis where constraintList is the list of all constraints on strategies
+def SS(constraintList, forceList,n,k): #n is the size of the ring, k the number of robots
+	""" synchronous synthesis where constraintList is the list of all constraints on strategies
 and ForceList is the list of all forced substrategy, an element of these List is of the form tabconf , strat
 
 Cette fonction necessite qu'il y ait déjq un fichier ltl qui puisse être utilisé"""
 	synthesisFile = open("synthese.xml","w")
-	synthesisFile.write("""<?xml version="1.0" encoding="utf-8"?><!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd'><nta><declaration>// Place global declarations here.
-"""
-synthesisFile.write("const int n={0};\nconst int k={1};\n".format(n,k)
+	synthesisFile.write("""<?xml version="1.0" encoding="utf-8"?><!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd'><nta><declaration>// Place global declarations here.""")
+	synthesisFile.write("const int n={0};\nconst int k={1};\n".format(n,k))
 
-synthesisFile.write("""		
+	synthesisFile.write("""		
 const int BACK = 0; //dans le sens antihoraire
 const int FRONT = 1; //dans le sesn horaire
 const int IDLE = 2; //do not move
@@ -367,12 +366,12 @@ bool strat_ok () {
 if (stratOK != 5)
 	return False;
 """)
-	for (forceConstraint in forceList):
+	for forceConstraint in forceList:
 		conf = getConf(forceConstraint)
 		strat = getStrat(forceConstraint)
 		synthesisFile.write("if (")
 		i=0
-		for elt in conf 
+		for elt in conf :
 			synthesisFile.write("conf[{0}] = {1} &amp;&amp; ".format(i,elt))
 			i+=1
 		synthesisFile.write("strat != {0} )\n\treturn False;\n\n".format(strat))
@@ -382,14 +381,14 @@ if (stratOK != 5)
 		strat = getStrat(constraint)
 		syntheisFile.write("if(")
 		i=0
-		for elt in conf
+		for elt in conf :
 			synthesisFile.write("conf[{0}] = {1} &amp;&amp; ".format(i,elt))
 			i+=1
 		synthesisFile.write("strat == {0}\n\treturn False;\n\n".format(strat))
 
-synthesisFile.write("return True;\n}")	
+	synthesisFile.write("return True;\n}")	
 
-synthesisFile.write("""
+	synthesisFile.write("""
 //met à jour les positions en fonction des mouvements décider par la stratégie
 //a cette étape les movements sont soit droite soit gauche ou pas bouger
 void move(){
