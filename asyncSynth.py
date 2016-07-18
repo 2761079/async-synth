@@ -63,7 +63,7 @@ def StartAsyncSynth(n,k):
 
 	gen_init()
 	
-	AsyncSynth()
+	AsyncSynth([],[], n, k)
 
 
 
