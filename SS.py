@@ -15,7 +15,7 @@ def SS(constraintList, forceList,n,k): #n is the size of the ring, k the number 
 	""" synchronous synthesis where constraintList is the list of all constraints on strategies
 and ForceList is the list of all forced substrategy, an element of these List is of the form tabconf , strat
 
-Cette fonction necessite qu'il y ait déjq un fichier ltl qui puisse être utilisé"""
+Cette fonction necessite qu'il y ait déjà un fichier ltl qui puisse être utilisé"""
 	synthesisFile = open("synthese.xml","w")
 	synthesisFile.write("""<?xml version="1.0" encoding="utf-8"?><!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd'><nta><declaration>// Place global declarations here.""")
 	synthesisFile.write("const int n={0};\nconst int k={1};\n".format(n,k))
