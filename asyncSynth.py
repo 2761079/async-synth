@@ -38,19 +38,19 @@ def proc_MC(S):
 	return i, etats # (i, S)
 
 
-def AsyncSynth(C=[], F=[]):
+def AsyncSynth(C, F, n, k):
 	"""parcourt l'arbre de toutes les stratégies, il stoke au passage les stratégies avec le moins d'états à retirer: n = ring_size, k = nb_robots"""
 	"""#first time -> creation 
 	if len(C)<1 && len(F)<1:
 		ltlgathering(n,k)
 		uppaalQuery()"""
-	boolSS, strat = SS(C, F)
+	boolSS, strat = SS(C, F,n, k)
 	if (not boolSS): #la synthese n'a pas marché
 		return
 	i, E = proc_MC(strat)
 	strategies.add(i, (strat,E))
 	for a in S:
-		pr=Process(AsyncSynth, C+[a], F)
+		pr=Process(AsyncSynth, C+[a], F, n, k)
 		pr.start()
 		pr.join()#ligne a commenter (resp décomenter) pour activer (resp desactiver) la paralellisation
 		F+=[a]
