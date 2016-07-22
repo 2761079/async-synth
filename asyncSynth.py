@@ -1,16 +1,11 @@
 from SS import *
 from properties import *
-from traduction import *
+#from traduction import *
 
 from threading import Lock, Semaphore
 from multiprocessing import Process
 
 
-POS_INIT = []
-gen_init()
-strategies = Minimum(len(POS_INIT))
-
-sem = Semaphore(10)
 
 def gen_init():
 	"""Genere une fois au début l'ensemble des positions initales"""
@@ -96,3 +91,10 @@ class Minimum:
 			elif i < minimum :
 				strats = [El]
 				minimum = min
+
+
+POS_INIT = []
+gen_init()
+strategies = Minimum(len(POS_INIT))
+
+sem = Semaphore(10)

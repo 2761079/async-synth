@@ -15,7 +15,7 @@ def SS(constraintList, forceList,n,k): #n is the size of the ring, k the number 
 	""" synchronous synthesis where constraintList is the list of all constraints on strategies
 and ForceList is the list of all forced substrategy, an element of these List is of the form tabconf , strat
 
-Cette fonction necessite qu'il y ait déjà un fichier ltl qui puisse être utilisé"""
+Cette fonction necessite qu'il y ait deje un fichier ltl qui puisse etre utilise"""
 	synthesisFile = open("synthese.xml","w")
 	synthesisFile.write("""<?xml version="1.0" encoding="utf-8"?><!DOCTYPE nta PUBLIC '-//Uppaal Team//DTD Flat System 1.1//EN' 'http://www.it.uu.se/research/group/darts/uppaal/flat-1_1.dtd'><nta><declaration>// Place global declarations here.""")
 	synthesisFile.write("const int n={0};\nconst int k={1};\n".format(n,k))
@@ -32,7 +32,7 @@ const int player_const = 624;//5^k-1  pour k=4 robots
 const int adv_const = 15;//2^k-1  pour k = 4 robots
 
 
-int [-1, player_const] strat = -1;//-1 quand on est dans l'état joueur )&gt; 5^k
+int [-1, player_const] strat = -1;//-1 quand on est dans l'etat joueur )&gt; 5^k
 //conf d_1 .... d_k
 int [-1, n+1] conf[k]; //n+1 juste pour l'initialisation et -1 autrement
 //int conf[k];
@@ -47,7 +47,7 @@ int tabpos[k];
 int stratOK;
 int nbViews;
 
-//initialise la conf à n+1 partout pour que l'adversaire puisse choisir une conf initiale
+//initialise la conf e n+1 partout pour que l'adversaire puisse choisir une conf initiale
 void init_conf(){
 	int i; 
 	for (i = 0; i &lt; k; i++){
@@ -84,16 +84,16 @@ bool conf_periodic(){
 }
 
 //on verifie qu'il n'y a pas de strategie si pour la conf (1,1,1,2) on prend la strategie 601
-// pour plus d'information sur pourquoi ces lignes sont arrivées là voir le fichier PB_option_uppaal
+// pour plus d'information sur pourquoi ces lignes sont arrivees le voir le fichier PB_option_uppaal
 //pb() permet de savoir si on est dans cette conf 
-// PB était là pour debuggage
+// PB etait le pour debuggage
 //bool pb(){
 //	return false;
 //	return (conf[0]==1 &amp;&amp; conf[1]==1 &amp;&amp; conf[2]==1 &amp;&amp; conf[3]==2);
 //}
 
 
-// Les deux fonctions suivantes permettent de savoir si la config crée est correcte ou non
+// Les deux fonctions suivantes permettent de savoir si la config cree est correcte ou non
 bool conf_valid(){
 	return ((somme_conf() == n) &amp;&amp; !conf_periodic()); 
 }
@@ -101,7 +101,7 @@ bool conf_not_valid(){
 	return (somme_conf() != n);
 }
 
-//cette fonction permet à l'adversaire de choisir une configuration initiale
+//cette fonction permet e l'adversaire de choisir une configuration initiale
 void newConf(int sep){
 	int somme = 0;
 	int i;
@@ -155,17 +155,17 @@ int i;
 }*/
 
 //retourne 1 si equal
-	//-1 si opposé
-	//0 si différentes
+	//-1 si oppose
+	//0 si differentes
 int sameView(int view1[k],int  view2[k]){
 	int nb0start1 = 0;
 	int nb0start2 =0;
-	//booleens pour savoir si on est toujours dans le bloc de 0 du début
+	//booleens pour savoir si on est toujours dans le bloc de 0 du debut
 	int start1 =1;
 	int start2 = 1;
 	int nb0end1 = 0;
 	int nb0end2 = 0;
-	//booleens pour savoir si on est toujours à la fin 
+	//booleens pour savoir si on est toujours e la fin 
 	int end1 = 1;
 	int end2 = 1;
 	int i;
@@ -216,7 +216,7 @@ int sameView(int view1[k],int  view2[k]){
 			else if ((view1[i+nb0start1] != view2[i+nb0start2]) &amp;&amp; 
 		   	         (view1[i+nb0start1] ==  view2[k-1-i-nb0end2] ))
 					sens = 0;
-			//autrement a droite on a la même chose qu'a gauche et
+			//autrement a droite on a la meme chose qu'a gauche et
 			//du coup on continu sur pas de sens jusqu'a trouver
 			//le sens 
 	}
@@ -227,7 +227,7 @@ int sameView(int view1[k],int  view2[k]){
 
 //on ajoute la vue si elle nest pas dans le tableau et on renvoie son indice
 	//si la vue existe on renvoie son indice
-	//si la vue existe dans le sens anti horaire on renvoie son opposé
+	//si la vue existe dans le sens anti horaire on renvoie son oppose
 /*int add_if_not_in(int indice, int view1[k], int tab_views[k][k], int tailleTabViews){
 	int i;
 	//int sens =-1;//0 = anticlockwise //1 clockwise
@@ -249,13 +249,13 @@ int sameView(int view1[k],int  view2[k]){
 }*/
 
 // retourne 1 si la vue est un palindrome et 0 sinon
-// le robot ayant cette vue est alors desorienté
+// le robot ayant cette vue est alors desoriente
 int is_palindrome(int view1[k]){
 	int nb0start = 0;
-	//booleens pour savoir si on est toujours dans le bloc de 0 du début
+	//booleens pour savoir si on est toujours dans le bloc de 0 du debut
 	int start =1;
 	int nb0end = 0;
-	//booleen pour savoir si on est toujours à la fin 
+	//booleen pour savoir si on est toujours e la fin 
 	int end = 1;
 	int i;
 	
@@ -276,16 +276,16 @@ int is_palindrome(int view1[k]){
 	return 1;
 }
 
-//tab de mouvements tels qu'ils seront envoyés à l'adversaire
+//tab de mouvements tels qu'ils seront envoyes e l'adversaire
 // retourne -1 si rien ne va plus
 void get_confuse_strat(int s){
-	//int nbViews = 0; //nb vues différentes
+	//int nbViews = 0; //nb vues differentes
 	int i,j;
 	int all_views[k][k];
 	int view1[k];
 
 	int index;
-	int in;// n+1 ie pas encore trouvé
+	int in;// n+1 ie pas encore trouve
 	int move;
 
 	stratOK = 1;
@@ -332,7 +332,7 @@ void get_confuse_strat(int s){
 				stratOK = 2;
 				return;
 			}else {	finalStrat[i]= stratTab[index];}
-		//non desorienté
+		//non desoriente
 		}else{
 			if ((stratTab[index] == DESORIENTED) || 
 			    (stratTab[index] == NO_MOUV)) {
@@ -360,8 +360,8 @@ void get_confuse_strat(int s){
 	}
 	stratOK = 5;
 }
-// si strat_ok(), on va dans un état de l'adversaire, sinon, on retourne de là d'où on vient et on recommence.
-//Seule utilité : que la contre-stratégie quand elle existe, ne tienne pas compte des mauvais choix de stratégies du joueur (codes 1,2,3,4)
+// si strat_ok(), on va dans un etat de l'adversaire, sinon, on retourne de le d'ou on vient et on recommence.
+//Seule utilite : que la contre-strategie quand elle existe, ne tienne pas compte des mauvais choix de strategies du joueur (codes 1,2,3,4)
 bool strat_ok () {
 if (stratOK != 5)
 	return False;
@@ -389,8 +389,8 @@ if (stratOK != 5)
 	synthesisFile.write("return True;\n}")	
 
 	synthesisFile.write("""
-//met à jour les positions en fonction des mouvements décider par la stratégie
-//a cette étape les movements sont soit droite soit gauche ou pas bouger
+//met e jour les positions en fonction des mouvements decider par la strategie
+//a cette etape les movements sont soit droite soit gauche ou pas bouger
 void move(){
 	int i; 
 	for(i = 0; i &lt; k ; i++){
@@ -424,22 +424,22 @@ void conf_to_repconf () {
   int workingtab[k];//Tableau qui va contenir tous les index d'apparition de la valeur min
 
   //affiche(workingtab,k);
-  //Maintenant on va vouloir parcourir workingtab, et pour chaque indice, vérifier à gauche et à droite si on est de nouveau le min.
-  //Il faut se souvenir du sens de parcours, parce qu'après, il est fixé. De plus, on va se souvenir où on est et d'où on part, par commodité.
-  //Les uples sont de la forme (indice où on est, sens (0 ou 1), indice d'où on est parti)
+  //Maintenant on va vouloir parcourir workingtab, et pour chaque indice, verifier e gauche et e droite si on est de nouveau le min.
+  //Il faut se souvenir du sens de parcours, parce qu'apres, il est fixe. De plus, on va se souvenir ou on est et d'ou on part, par commodite.
+  //Les uples sont de la forme (indice ou on est, sens (0 ou 1), indice d'ou on est parti)
 
   int size = 2*3*k;
   int firstupletab[2*3*k];//tableau qui contiendra les uples vus plus haut.
-  int numofelt = 0;//On va compter le nombre d'élements qu'on va mettre dans firstupletab, comme ça on pourra refaire un tableau de bonne taille.
+  int numofelt = 0;//On va compter le nombre d'elements qu'on va mettre dans firstupletab, comme ca on pourra refaire un tableau de bonne taille.
 
   //affiche(6*k, firstupletab);
-  //On va maintenant continuer à explorer les indices dans le même ordre jusqu'à n'en avoir plus qu'un seul, ou au pire k fois-2 fois (on a déjà parcouru 2 indices)
+  //On va maintenant continuer e explorer les indices dans le meme ordre jusqu'e n'en avoir plus qu'un seul, ou au pire k fois-2 fois (on a deje parcouru 2 indices)
   //On commence par prendre un tableau plus petit.
 
 
   //On va maintenant parcourir pour chercher le min par ordre lexicographique.
 
-  int secondupletab[2*3*k];//On va avoir besoin de stocker les valeurs sans écraser smallupletab.
+  int secondupletab[2*3*k];//On va avoir besoin de stocker les valeurs sans ecraser smallupletab.
 
   //var
   int start;
@@ -447,10 +447,10 @@ void conf_to_repconf () {
 	//pour findmins
 	int temptab[k];
 	int minval = n+1;//valeur min d'initialisation, donc plus grand que le max.
-	int index = 0;//index d'écriture dans workingtab
+	int index = 0;//index d'ecriture dans workingtab
 
 	//pour directional tab
-	int notover = 1;//On a fini les indices "utiles", ie, on est arrivé aux -1.
+	int notover = 1;//On a fini les indices "utiles", ie, on est arrive aux -1.
 	int from,pre,post;
 	
 	//pour lexico_min
@@ -462,26 +462,26 @@ void conf_to_repconf () {
   int i,j, ji;
 
   //find_mins (workingtab, temptab);***************************************************************
-	//initialisationK(workingtab, -1);//-1 n'étant pas un index valide, on n'aura pas de problèmes.
+	//initialisationK(workingtab, -1);//-1 n'etant pas un index valide, on n'aura pas de problemes.
 	for (j=0;j&lt;k;j++){
     		workingtab[j]=-1;
 		temptab[j] = conf[j];
     	}  	
 
   	for (i=0;i&lt;k;i++){
-    		if (temptab[i] &lt; minval) { //On a trouvé une valeur plus petite strictement.
+    		if (temptab[i] &lt; minval) { //On a trouve une valeur plus petite strictement.
       			//initialisationK(workingtab, -1); //Du coup on efface tout ce qu'on avait.
 			for (j=0;j&lt;k;j++){
     				workingtab[j]=-1;
     			}
       			minval = temptab[i];//On garde cette valeur du min.
-      			index = 0;//On remet l'index à 0 pour revenir au début du tableau.
-      			workingtab[index++] = i;//On note l'emplacement de là où on a trouvé le min.
+      			index = 0;//On remet l'index e 0 pour revenir au debut du tableau.
+      			workingtab[index++] = i;//On note l'emplacement de le ou on a trouve le min.
     		}
     		else if (temptab[i] == minval) {
-      			workingtab[index++] = i;//On a trouvé un nouveau indice de valeur min.
+      			workingtab[index++] = i;//On a trouve un nouveau indice de valeur min.
     		}
-    		//Sinon, temptab[i] &gt; minval, on ne s'interesse pas à la valeur.
+    		//Sinon, temptab[i] &gt; minval, on ne s'interesse pas e la valeur.
   	}
 //**************
   //numofelt = directional_tab (firstupletab, temptab, workingtab);$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
@@ -510,14 +510,14 @@ void conf_to_repconf () {
     			}
 			minval = temptab[pre];
 			index = 1;
-			firstupletab[0] = pre;//Premier élement du uple.
-			firstupletab[1] = 0;//On va à gauche.
+			firstupletab[0] = pre;//Premier element du uple.
+			firstupletab[1] = 0;//On va e gauche.
 			firstupletab[2] = from;//On est parti de from.
 			numofelt = 1;
       		}
       		else if (temptab[pre] ==  minval) {
-			firstupletab[3*index] = pre;//Premier élement du uple.
-			firstupletab[3*index+1] = 0;//On va à gauche.
+			firstupletab[3*index] = pre;//Premier element du uple.
+			firstupletab[3*index+1] = 0;//On va e gauche.
 			firstupletab[3*index+2] = from;//On est parti de from.
 			index++;
 			numofelt++;
@@ -530,14 +530,14 @@ void conf_to_repconf () {
     			}
 			minval = temptab[post];
 			index = 1;
-			firstupletab[0] = post;//Premier élement du uple.
-			firstupletab[1] = 1;//On va à droite.
+			firstupletab[0] = post;//Premier element du uple.
+			firstupletab[1] = 1;//On va e droite.
 			firstupletab[2] = from;//On est parti de from.
  			numofelt = 1;
       		}
       		else if (temptab[post] == minval) {
-			firstupletab[3*index] = post;//Premier élement du uple.
-			firstupletab[3*index+1] = 1;//On va à droite.
+			firstupletab[3*index] = post;//Premier element du uple.
+			firstupletab[3*index+1] = 1;//On va e droite.
 			firstupletab[3*index+2] = from;//On est parti de from.
 			index++;
 			numofelt++;
@@ -548,9 +548,9 @@ void conf_to_repconf () {
   	}
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 size = 3*numofelt;
-//lexico_min(secondupletab, firstupletab, temptab, numofelt, size);€€€€€€€€€€€€€€€€€€€€€€€€€
+//lexico_min(secondupletab, firstupletab, temptab, numofelt, size);-------------------------
   minval = n+1;//On initialise avec le max+1.
-  morethanone = 0;//On vérifie qu'on a bien plus d'un seul élement. Sinon on peut s'arreter.
+  morethanone = 0;//On verifie qu'on a bien plus d'un seul element. Sinon on peut s'arreter.
   index = 0;
   if(numofelt &gt; 1) morethanone = 1;
   //initialisation (secondupletab, -1);
@@ -567,10 +567,10 @@ size = 3*numofelt;
 	//affiche(size, smallupletab);
     	for (j=0;j&lt;numofelt;j++){
       		if (firstupletab[3*j+1]) {
-			nextindex = (firstupletab[3*j]+1+k)%k;//Si c'est 1 on va à droite.
+			nextindex = (firstupletab[3*j]+1+k)%k;//Si c'est 1 on va e droite.
       		}
       		else {
-			nextindex = (firstupletab[3*j]-1+k)%k;//Sinon c'est 0, on va à gauche.
+			nextindex = (firstupletab[3*j]-1+k)%k;//Sinon c'est 0, on va e gauche.
       		}
       		if (temptab[nextindex] &lt; minval) {
 			//initialisation (secondupletab, -1);
@@ -579,15 +579,15 @@ size = 3*numofelt;
   			}
 			minval = temptab[nextindex];
 			index = 1;
-			secondupletab[0] = nextindex;//Premier élement du uple.
-			secondupletab[1] = firstupletab[3*j+1];//On garde le même sens.
-			secondupletab[2] = firstupletab[3*j+2];//On garde le même from.
+			secondupletab[0] = nextindex;//Premier element du uple.
+			secondupletab[1] = firstupletab[3*j+1];//On garde le meme sens.
+			secondupletab[2] = firstupletab[3*j+2];//On garde le meme from.
 			numofnewelt = 1;
       		}
        		else if (temptab[nextindex] ==  minval) {
-			secondupletab[3*index] = nextindex;//Premier élement du uple.
-			secondupletab[3*index+1] = firstupletab[3*j+1];//On garde le même sens.
-			secondupletab[3*index+2] = firstupletab[3*j+2];//On garde le même from.
+			secondupletab[3*index] = nextindex;//Premier element du uple.
+			secondupletab[3*index+1] = firstupletab[3*j+1];//On garde le meme sens.
+			secondupletab[3*index+2] = firstupletab[3*j+2];//On garde le meme from.
 			index++;
 			numofnewelt++;
       		}
@@ -609,11 +609,11 @@ for (j=0;j&lt;size;j++){
   }
     index = 0;
   }
-//€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€€
+//------------------------------------
 
   //affiche(3*numofelt, smallupletab);
 
-  //Maintenant on sait quel est le représentant de la classe d'equivalence.
+  //Maintenant on sait quel est le representant de la classe d'equivalence.
   start = firstupletab[2];
   dirrection = firstupletab[1];
   if (dirrection == 0) {
@@ -649,7 +649,7 @@ void tabpos_to_conf () {
     }
 
 
-  //temptab est un tableau temporaire qui va être trié plus tard.
+  //temptab est un tableau temporaire qui va etre trie plus tard.
   for (i=0;i&lt;k-1;i++) {
     conf[i] = tabpos[i+1] - tabpos[i];
     p -= conf[i];
@@ -674,7 +674,7 @@ void confuseStrat_to_realStrat (int advdecision[k]) {
 
 
 
-//la fonction qui fait bouger les robots selon la stratégie choisie et fais bouger les désorientés
+//la fonction qui fait bouger les robots selon la strategie choisie et fais bouger les desorientes
 //for (i=0;i&lt;k;i++) {
 	//	get strat adv
 //getStrat player(strat, stratTab);
@@ -685,7 +685,7 @@ void confuseStrat_to_realStrat (int advdecision[k]) {
 //tabpos_to_conf(conf, tabpos); en repconf
 
 
-//fonction qui remet toutes les variables globales à -1;
+//fonction qui remet toutes les variables globales e -1;
 void reset_all(){
 	int i;	
 	for (i=0;i&lt;k;i++) {
