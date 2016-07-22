@@ -1,6 +1,7 @@
 from SS import *
 from properties import *
 #from traduction import *
+from initStates import init_states, sp4
 
 from threading import Lock, Semaphore
 from multiprocessing import Process
@@ -70,7 +71,9 @@ def StartAsyncSynth(n,k):
 	uppaalQuery()
 
 	gen_init()
-	
+
+	POS_INIT = init_states(n,k)
+
 	AsyncSynth([],[], n, k)
 
 
@@ -93,7 +96,7 @@ class Minimum:
 				minimum = min
 
 
-POS_INIT = []
+POS_INIT = [] 
 gen_init()
 strategies = Minimum(len(POS_INIT))
 
