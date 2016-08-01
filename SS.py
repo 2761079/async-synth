@@ -383,7 +383,7 @@ if (stratOK != 5)
 		syntheisFile.write("if(")
 		i=0
 		for elt in conf :
-			synthesisFile.write("conf[{0}] = {1} &amp;&amp; ".format(i,elt))
+			synthesisFile.write("conf[{0}] == {1} &amp;&amp; ".format(i,elt))
 			i+=1
 		synthesisFile.write("strat == {0}\n\treturn False;\n\n".format(strat))
 
