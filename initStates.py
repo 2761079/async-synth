@@ -27,7 +27,7 @@ def config_from_view(v):
 def is_rotation(c):
 	cur = c
 	for i in range(len(c)):
-		cur = next(cur):
+		cur = next(cur)
 		if cur== c :
 			return True
 	return False

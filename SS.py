@@ -1,4 +1,5 @@
 import sys
+import os
 """ Synchoronous synthesis call"""
 
 def getStrat(constraint):
@@ -10,6 +11,7 @@ def getStrat(constraint):
 def getConf(constraint):
 	""" return the configuration of the constraint"""
 	
+
 
 def SS(constraintList, forceList,n,k): #n is the size of the ring, k the number of robots
 	""" synchronous synthesis where constraintList is the list of all constraints on strategies
@@ -34,13 +36,14 @@ const int adv_const = 15;//2^k-1  pour k = 4 robots
 
 int [-1, player_const] strat = -1;//-1 quand on est dans l'etat joueur )&gt; 5^k
 //conf d_1 .... d_k
-int [-1, n+1] conf[k]; //n+1 juste pour l'initialisation et -1 autrement
+int [-1, """)
+	synthesisFile.write(str(n))
+	synthesisFile.write("""+1] conf[k]; //n+1 juste pour l'initialisation et -1 autrement
 //int conf[k];
 
 //int view1[k];
 //int view2[k];
-//int ta------------------------------------
-b_views[k][k];
+//int tab_views[k][k];//yavait un truc bizare ici a reverifier
 //int confuse_strat[k];
 int stratTab[k];
 int finalStrat[k];
@@ -52,7 +55,9 @@ int nbViews;
 void init_conf(){
 	int i; 
 	for (i = 0; i &lt; k; i++){
-		conf[i] = n+1;
+		conf[i] = """)
+	synthesisFile.write(str(n))
+	synthesisFile.write("""+1;
 	}
 	stratOK = -1;
 }
@@ -63,7 +68,9 @@ int somme_conf(){
 	int somme = 0;
 	for(i = 0; i &lt; k ; i++){
 		somme += conf[i];
-		if(conf[i] == -1 || conf[i]==n+1)
+		if(conf[i] == -1 || conf[i]==""")
+	synthesisFile.write(str(n))
+	synthesisFile.write("""+1)
 		return -1;
 	}
 	return somme;
@@ -72,7 +79,9 @@ int somme_conf(){
 bool conf_periodic(){ 
 	int i,j;
 	bool periodic = true;
-	if (conf[i] ==n+1)//on est a l'initialisation
+	if (conf[i] ==""")
+	synthesisFile.write(str(n))
+	synthesisFile.write("""+1)//on est a l'initialisation
 		return false;
 	for(i=1; i&lt;k; i++){
 		for(j=0; j &lt;k ; j++){
@@ -96,10 +105,14 @@ bool conf_periodic(){
 
 // Les deux fonctions suivantes permettent de savoir si la config cree est correcte ou non
 bool conf_valid(){
-	return ((somme_conf() == n) &amp;&amp; !conf_periodic()); 
+	return ((somme_conf() == """)
+	synthesisFile.write(str(n))
+	synthesisFile.write(""") &amp;&amp; !conf_periodic()); 
 }
 bool conf_not_valid(){
-	return (somme_conf() != n);
+	return (somme_conf() != """)
+	synthesisFile.write(str(n))
+	synthesisFile.write(""");
 }
 
 //cette fonction permet e l'adversaire de choisir une configuration initiale
@@ -108,9 +121,15 @@ void newConf(int sep){
 	int i;
 	int j; 
 	for (i = 0; i &lt; k-1; i++){
-		if(conf[i] == n+1){
-			if (somme+sep &gt; n){
-				conf[i]= n-somme;
+		if(conf[i] == """)
+	synthesisFile.write(str(n))
+	synthesisFile.write("""+1){
+			if (somme+sep &gt; """)
+	synthesisFile.write(str(n))
+	synthesisFile.write("""){
+				conf[i]= """)
+	synthesisFile.write(str(n))
+	synthesisFile.write("""-somme;
 				for(j = i+1; j&lt;k; j++)
 					conf[j] = 0;
 				return;
@@ -121,7 +140,9 @@ void newConf(int sep){
 			somme +=conf[i];
 		}
 	}
-	conf[k-1] = n-somme;
+	conf[k-1] = """)
+	synthesisFile.write(str(n))
+	synthesisFile.write("""-somme;
 }
 
 //guarde qui permet de savoir si on a atteint la config de rassemblement (i.e., [0,0,...,0,n] )
@@ -235,14 +256,14 @@ int sameView(int view1[k],int  view2[k]){
 	for (i=0; i &lt; tailleTabViews ; i++){
 		int equ = sameView(view1,tab_views[i]);
 		if (equ != 0){ //avec equ = -1 ou +1 
-			//printf("le robot %d a la meme vue que le robot %d opp = %d \n",indice, i, equ);
+			//printf("le robot %d a la meme vue que le robot %d opp = %d",indice, i, equ);
 			if (equ &gt;0)
 				return i*equ;
 			else 
 				return (i+1)*equ;
 		}
 	}
-	//printf("le robot %d a une vue unique\n", indice);
+	//printf("le robot %d a une vue unique", indice);
 
 	for(i=0; i &lt;k ; i++)
 		tab_views[tailleTabViews][i] = view1[i];
@@ -296,7 +317,9 @@ void get_confuse_strat(int s){
 
 	nbViews=0;
 	for(i=0; i&lt;k; i++){
-		in = n+1; 
+		in = """)
+	synthesisFile.write(str(n))
+	synthesisFile.write("""+1; 
 		//getView(i);
 		for(j=0; j&lt;k; j++){
 			view1[j] = conf[(i+j+k)%k];
@@ -307,15 +330,17 @@ void get_confuse_strat(int s){
 		for (j=0; j &lt; nbViews ; j++){
 			int equ = sameView(view1,all_views[j]);//int sens =-1 si elles sont opposees//0 si diff //1 si identiques
 			if (equ != 0){ //avec equ = -1 ou +1 
-				//printf("le robot %d a la meme vue que le robot %d opp = %d \n",indice, i, equ);
+				//printf("le robot %d a la meme vue que le robot %d opp = %d ",indice, i, equ);
 				if (equ &gt;0)
 					in = j*equ;
 				else 
 					in = (j+1)*equ;
 			}
 		}
-		//printf("le robot %d a une vue unique\n", indice);
-		if(in == n+1){
+		//printf("le robot %d a une vue unique", indice);
+		if(in == """)
+	synthesisFile.write(str(n))
+	synthesisFile.write("""+1){
 			in = nbViews;
 			for(j=0; j &lt;k ; j++)
 				all_views[nbViews][j] = view1[j];
@@ -365,7 +390,7 @@ void get_confuse_strat(int s){
 //Seule utilite : que la contre-strategie quand elle existe, ne tienne pas compte des mauvais choix de strategies du joueur (codes 1,2,3,4)
 bool strat_ok () {
 if (stratOK != 5)
-	return False;
+	return false;
 """)
 	for forceConstraint in forceList:
 		conf = getConf(forceConstraint)
@@ -375,7 +400,7 @@ if (stratOK != 5)
 		for elt in conf :
 			synthesisFile.write("conf[{0}] == {1} &amp;&amp; ".format(i,elt))
 			i+=1
-		synthesisFile.write("strat != {0} )\n\treturn False;\n\n".format(strat))
+		synthesisFile.write("strat != {0} )\n\treturn false;\n\n".format(strat))
 
 	for constraint in constraintList:
 		conf = getConf(constraint)
@@ -385,9 +410,9 @@ if (stratOK != 5)
 		for elt in conf :
 			synthesisFile.write("conf[{0}] == {1} &amp;&amp; ".format(i,elt))
 			i+=1
-		synthesisFile.write("strat == {0}\n\treturn False;\n\n".format(strat))
+		synthesisFile.write("strat == {0}\n\treturn false;\n\n".format(strat))
 
-	synthesisFile.write("return True;\n}")	
+	synthesisFile.write("return true;\n}")	
 
 	synthesisFile.write("""
 //met e jour les positions en fonction des mouvements decider par la strategie
@@ -396,9 +421,15 @@ void move(){
 	int i; 
 	for(i = 0; i &lt; k ; i++){
 		if (finalStrat[i] == 1)
-			tabpos[i] = (tabpos[i]+1)%n;
+			tabpos[i] = (tabpos[i]+1)%""")
+	synthesisFile.write(str(n))
+	synthesisFile.write(""";
 		else if(finalStrat[i]== 0)
-			tabpos[i] = (tabpos[i]-1+n)%n;
+			tabpos[i] = (tabpos[i]-1+""")
+	synthesisFile.write(str(n))
+	synthesisFile.write(""")%""")
+	synthesisFile.write(str(n))
+	synthesisFile.write(""";
 	}
 }
 
@@ -447,7 +478,9 @@ void conf_to_repconf () {
   int dirrection;
 	//pour findmins
 	int temptab[k];
-	int minval = n+1;//valeur min d'initialisation, donc plus grand que le max.
+	int minval = """)
+	synthesisFile.write(str(n))
+	synthesisFile.write("""+1;//valeur min d'initialisation, donc plus grand que le max.
 	int index = 0;//index d'ecriture dans workingtab
 
 	//pour directional tab
@@ -488,7 +521,9 @@ void conf_to_repconf () {
   //numofelt = directional_tab (firstupletab, temptab, workingtab);$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 	numofelt = 0;
 	index = 0;
-	minval = n+1;
+	minval = """)
+	synthesisFile.write(str(n))
+	synthesisFile.write("""+1;
 	size = 6*k;
 	//initialisation (firstupletab, -1);
 	for (j=0;j&lt;size;j++){
@@ -537,20 +572,22 @@ void conf_to_repconf () {
  			numofelt = 1;
       		}
       		else if (temptab[post] == minval) {
-			firstupletab[3*index] = post;//Premier element du uple.
-			firstupletab[3*index+1] = 1;//On va e droite.
-			firstupletab[3*index+2] = from;//On est parti de from.
-			index++;
-			numofelt++;
-	      		}
+				firstupletab[3*index] = post;//Premier element du uple.
+				firstupletab[3*index+1] = 1;//On va e droite.
+				firstupletab[3*index+2] = from;//On est parti de from.
+				index++;
+				numofelt++;
+			}
 
-      		i++;
-    		}
-  	}
+			i++;
+		}
+	}
 //$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$
 size = 3*numofelt;
 //lexico_min(secondupletab, firstupletab, temptab, numofelt, size);-------------------------
-  minval = n+1;//On initialise avec le max+1.
+  minval = """)
+	synthesisFile.write(str(n))
+	synthesisFile.write("""+1;//On initialise avec le max+1.
   morethanone = 0;//On verifie qu'on a bien plus d'un seul element. Sinon on peut s'arreter.
   index = 0;
   if(numofelt &gt; 1) morethanone = 1;
@@ -562,7 +599,9 @@ size = 3*numofelt;
 
   i=0;
   while(i &lt; (k-2) &amp;&amp; morethanone){
-    	minval=n+1;
+    	minval=""")
+	synthesisFile.write(str(n))
+	synthesisFile.write("""+1;
     	numofnewelt = 0;
 	//printf("et smallupletab = ");
 	//affiche(size, smallupletab);
@@ -626,7 +665,9 @@ for (j=0;j&lt;size;j++){
 }
     
 void tabpos_to_conf () {
-  int p = n;
+  int p = """)
+	synthesisFile.write(str(n))
+	synthesisFile.write(""";
   int i;
   int tmp;
   int taille = k;
@@ -657,7 +698,9 @@ void tabpos_to_conf () {
   }
   if(p &lt;-1)
 	conf[k-1] = -1;
-  else if (p &gt; n+1)
+  else if (p &gt; """)
+	synthesisFile.write(str(n))
+	synthesisFile.write("""+1)
 	conf[k-1] = -1;
   else
  	conf[k-1] = p;
@@ -715,7 +758,8 @@ void move_All(int disoriented) {
 	reset_all();
 }
 
-
+""")
+	synthesisFile.write("""
 
 
 void test(){
@@ -727,15 +771,16 @@ void test(){
 	//conf_to_repconf();
 }
 
-
-
 </declaration><template><name x="5" y="5">Template</name><declaration>// Place local declarations here.
-</declaration><location id="id0" x="240" y="-224"><name x="230" y="-254">player2</name></location><location id="id1" x="504" y="96"><urgent/></location><location id="id2" x="-176" y="-56"></location><location id="id3" x="232" y="104"><name x="216" y="120">goal</name></location><location id="id4" x="528" y="-136"><name x="518" y="-166">Adv</name><urgent/></location><location id="id5" x="232" y="-56"><name x="184" y="-80">Player</name></location><location id="id6" x="-16" y="-56"><name x="-32" y="-32">vh</name><urgent/></location><init ref="id2"/><transition controllable="false" action=""><source ref="id4"/><target ref="id5"/><label kind="select" x="360" y="-88">disoriented : int[0,adv_const]</label><label kind="assignment" x="376" y="-72">move_All(disoriented)</label></transition><transition action=""><source ref="id0"/><target ref="id4"/><label kind="guard" x="384" y="-200">strat_ok()</label></transition><transition action=""><source ref="id0"/><target ref="id5"/><label kind="assignment" x="272" y="-152">reset_all()</label><nail x="272" y="-136"/></transition><transition action=""><source ref="id5"/><target ref="id0"/><label kind="select" x="56" y="-184">s : int[0,player_const]</label><label kind="guard" x="56" y="-168">conf_valid()</label><label kind="assignment" x="56" y="-152">get_confuse_strat(s)</label><label kind="comments">guard &amp;&amp; ! pb()</label><nail x="200" y="-136"/></transition><transition controllable="false" action=""><source ref="id6"/><target ref="id3"/><label kind="guard" x="48" y="48">conf_periodic()</label></transition><transition controllable="false" action=""><source ref="id1"/><target ref="id5"/><label kind="assignment" x="448" y="40">test()</label></transition><transition action=""><source ref="id2"/><target ref="id6"/><label kind="assignment" x="-160" y="-56">init_conf()</label></transition><transition action=""><source ref="id5"/><target ref="id3"/><label kind="guard" x="152" y="-8">gathering()</label></transition><transition controllable="false" action=""><source ref="id6"/><target ref="id5"/><label kind="guard" x="72" y="-72">conf_valid()</label><label kind="assignment" x="48" y="-56">conf_to_repconf()</label></transition><transition controllable="false" action=""><source ref="id6"/><target ref="id6"/><label kind="select" x="-72" y="-168">sep : int[0,n]</label><label kind="guard" x="-80" y="-184">conf_not_valid()</label><label kind="assignment" x="-72" y="-152">newConf(sep)</label><nail x="-48" y="-128"/><nail x="8" y="-128"/></transition></template><system>// Place template instantiations here.
+</declaration><location id="id0" x="240" y="-224"><name x="230" y="-254">player2</name></location><location id="id1" x="504" y="96"><urgent/></location><location id="id2" x="-176" y="-56"></location><location id="id3" x="232" y="104"><name x="216" y="120">goal</name></location><location id="id4" x="528" y="-136"><name x="518" y="-166">Adv</name><urgent/></location><location id="id5" x="232" y="-56"><name x="184" y="-80">Player</name></location><location id="id6" x="-16" y="-56"><name x="-32" y="-32">vh</name><urgent/></location><init ref="id2"/><transition controllable="false" action=""><source ref="id4"/><target ref="id5"/><label kind="select" x="360" y="-88">disoriented : int[0,adv_const]</label><label kind="assignment" x="376" y="-72">move_All(disoriented)</label></transition><transition action=""><source ref="id0"/><target ref="id4"/><label kind="guard" x="384" y="-200">strat_ok()</label></transition><transition action=""><source ref="id0"/><target ref="id5"/><label kind="assignment" x="272" y="-152">reset_all()</label><nail x="272" y="-136"/></transition><transition action=""><source ref="id5"/><target ref="id0"/><label kind="select" x="56" y="-184">s : int[0,player_const]</label><label kind="guard" x="56" y="-168">conf_valid()</label><label kind="assignment" x="56" y="-152">get_confuse_strat(s)</label><label kind="comments">guard &amp;&amp; ! pb()</label><nail x="200" y="-136"/></transition><transition controllable="false" action=""><source ref="id6"/><target ref="id3"/><label kind="guard" x="48" y="48">conf_periodic()</label></transition><transition controllable="false" action=""><source ref="id1"/><target ref="id5"/><label kind="assignment" x="448" y="40">test()</label></transition><transition action=""><source ref="id2"/><target ref="id6"/><label kind="assignment" x="-160" y="-56">init_conf()</label></transition><transition action=""><source ref="id5"/><target ref="id3"/><label kind="guard" x="152" y="-8">gathering()</label></transition><transition controllable="false" action=""><source ref="id6"/><target ref="id5"/><label kind="guard" x="72" y="-72">conf_valid()</label><label kind="assignment" x="48" y="-56">conf_to_repconf()</label></transition><transition controllable="false" action=""><source ref="id6"/><target ref="id6"/><label kind="select" x="-72" y="-168">sep : int[0,""")
+	synthesisFile.write(str(n))
+	synthesisFile.write("""]</label><label kind="guard" x="-80" y="-184">conf_not_valid()</label><label kind="assignment" x="-72" y="-152">newConf(sep)</label><nail x="-48" y="-128"/><nail x="8" y="-128"/></transition></template><system>// Place template instantiations here.
 Process = Template();
 
 // List one or more processes to be composed into a system.
 system Process;</system></nta>""")
 
 	
+	synthesisFile.close()
 	os.system("./verifytga synthese.xml gathering.q -t 0 > stratyga.txt")
 	return traduction("stratyga.txt")#bool, strat

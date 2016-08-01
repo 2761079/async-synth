@@ -6,13 +6,6 @@ from initStates import init_states, sp4
 from threading import Lock, Semaphore
 from multiprocessing import Process
 
-try:
-	k = int(sys.argv[1])
-	n = int(sys.argv[2])
-except:
-	sys.exit("you must give the number of robots in the arguments, and then the size of the ring ")
-
-StartAsyncSynth(n,k)
 
 def gen_init():
 	"""Genere une fois au début l'ensemble des positions initales"""
@@ -103,8 +96,17 @@ class Minimum:
 				minimum = min
 
 
+try:
+	n = int(sys.argv[1])
+	k = int(sys.argv[2])
+except:
+	sys.exit("you must give the number of robots in the arguments, and then the size of the ring ")
+
+
 POS_INIT = [] 
 gen_init()
 strategies = Minimum(len(POS_INIT))
 
 sem = Semaphore(10)
+
+StartAsyncSynth(n,k)
