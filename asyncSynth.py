@@ -6,7 +6,13 @@ from initStates import init_states, sp4
 from threading import Lock, Semaphore
 from multiprocessing import Process
 
+try:
+	k = int(sys.argv[1])
+	n = int(sys.argv[2])
+except:
+	sys.exit("you must give the number of robots in the arguments, and then the size of the ring ")
 
+StartAsyncSynth(n,k)
 
 def gen_init():
 	"""Genere une fois au début l'ensemble des positions initales"""
@@ -65,6 +71,7 @@ def AsyncSynth(C, F, n, k):
 		F+=[a]
 
 
+#TODO main
 def StartAsyncSynth(n,k):
 	"""Procédure pour lancer la synthèse"""
 	ltlgathering(n,k)

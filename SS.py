@@ -39,7 +39,8 @@ int [-1, n+1] conf[k]; //n+1 juste pour l'initialisation et -1 autrement
 
 //int view1[k];
 //int view2[k];
-//int tab_views[k][k];
+//int ta------------------------------------
+b_views[k][k];
 //int confuse_strat[k];
 int stratTab[k];
 int finalStrat[k];
@@ -372,7 +373,7 @@ if (stratOK != 5)
 		synthesisFile.write("if (")
 		i=0
 		for elt in conf :
-			synthesisFile.write("conf[{0}] = {1} &amp;&amp; ".format(i,elt))
+			synthesisFile.write("conf[{0}] == {1} &amp;&amp; ".format(i,elt))
 			i+=1
 		synthesisFile.write("strat != {0} )\n\treturn False;\n\n".format(strat))
 
@@ -735,5 +736,6 @@ Process = Template();
 // List one or more processes to be composed into a system.
 system Process;</system></nta>""")
 
-
-
+	
+	os.system("./verifytga synthese.xml gathering.q -t 0 > stratyga.txt")
+	return traduction("stratyga.txt")#bool, strat

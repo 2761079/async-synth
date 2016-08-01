@@ -39,7 +39,7 @@ def getFirst(myConfigNb,n,k,path):
 				maLigne = 2
 
 
-
+#TODO faire une fonction
 try:
 	k = int(sys.argv[1])
 	n = int(sys.argv[2])
@@ -113,7 +113,8 @@ with open("tes.txt", 'r') as file:
 				#myFile = open(filePath, "a")
 				add_rules(strat,maConf, n, k, filePath)
 					
-initializer.write ("""</template>""")
+initializer.write ("""</template>
+""")
 initializer.close()
 
 
@@ -211,7 +212,8 @@ pos = (pos+n-1)%n;
 			<source ref="id0"/>
 			<target ref="id1"/>
 			<label kind="guard" x="-195" y="-8">initialized &gt;= 0</label>
-			<label kind="assignment" x="-204" y="8">update_position()</label>	
+			<label kind="assignment" x="-204" y="8">update_position()</label>
+	
 		</transition>
 		<transition>
 			<source ref="id2"/>
@@ -243,7 +245,8 @@ system Process1, Process2, Process3, Process4, Initializer1;
     </system>
 	<queries>
 	</queries>
-</nta> """)
+</nta>
+ """)
 end.close()
 
 
