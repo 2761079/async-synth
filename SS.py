@@ -1,5 +1,6 @@
 import sys
 import os
+from trad import *
 """ Synchoronous synthesis call"""
 
 def getStrat(constraint):
@@ -782,7 +783,7 @@ system Process;</system></nta>""")
 	synthesisFile.close()
 	os.system("rm stratyga.txt")
 	os.system("./verifytga -w 0 synthese.xml gathering.q > stratyga.txt")
-	return traduction("stratyga.txt")#bool, strat
+	return traduction(n,k, "stratyga.txt")#bool, strat
 
 
 

@@ -112,7 +112,7 @@ def traduction(n,k,filename):
 					dveFile.write(str)
 				dveFile.write("""initialized = 0;}""")
 				previousConf=True
-			c	onfListe.append(conf)
+				confListe.append(conf)#) quelle indentation
 		#	else:
 		#		print(line)
 
