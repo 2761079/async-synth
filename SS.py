@@ -326,7 +326,6 @@ void get_confuse_strat(int s){
 		}
 		//on contruit le tableau des vues
 		//in = add_if_not_in(i,view,all_views, nbViews);
-		//$$$$$$$$$$$$$$$$$$$
 		for (j=0; j &lt; nbViews ; j++){
 			int equ = sameView(view1,all_views[j]);//int sens =-1 si elles sont opposees//0 si diff //1 si identiques
 			if (equ != 0){ //avec equ = -1 ou +1 
@@ -346,8 +345,6 @@ void get_confuse_strat(int s){
 				all_views[nbViews][j] = view1[j];
 			nbViews++;
 		}
-		//$$$$$$$$$$$$$$$$$$$
-		
 		//desoriented robots
 		if(in &lt; 0)
 			index = (in*-1)-1;
@@ -364,7 +361,7 @@ void get_confuse_strat(int s){
 			    (stratTab[index] == NO_MOUV)) {
 				stratOK = 3;
 				return;
-			}
+
 			if(in &gt;=0){ //vue clockwise direction existante
 					finalStrat[i]=stratTab[index];
 				}else {	//vue anti-clockwise direction existante
@@ -786,3 +783,13 @@ system Process;</system></nta>""")
 	os.system("rm stratyga.txt")
 	os.system("./verifytga -w 0 synthese.xml gathering.q > stratyga.txt")
 	return traduction("stratyga.txt")#bool, strat
+
+
+
+
+
+
+
+
+
+
