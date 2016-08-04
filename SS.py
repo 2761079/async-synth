@@ -361,7 +361,7 @@ void get_confuse_strat(int s){
 			    (stratTab[index] == NO_MOUV)) {
 				stratOK = 3;
 				return;
-
+			}
 			if(in &gt;=0){ //vue clockwise direction existante
 					finalStrat[i]=stratTab[index];
 				}else {	//vue anti-clockwise direction existante
