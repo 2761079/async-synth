@@ -11,46 +11,61 @@ from writing import *
 #os.system("rm RBTfile*")
 #os.system("rm newxml*")
 
+def isThereAStrategy(stratFileName):
+		myboolean = False
+		with open(stratFileName,'r')as stratFile:
+			for line in stratFile:
+				if "Property is satisfied" in line:
+					return True
+		return myboolean
+
 def getconf(config):
 	conf = []
 	for gp in config.groups():
 		conf.append(gp)	
 	return conf
 
-
-
-#TODO on est ici
-def getFirst(myConfigNb,n,k,path):
+def getFirst(n,k,stratFileName,filename):
+	"""write the strategy stratFileName as a dve model for k robots in a n node ring""" 
 	maLigne = 0
 	nbConfig = 0
-	filepath = path + "/RBT.xml"
-	with open("tes.txt", 'r') as file:
+	config = ""
+	for i in range(k):
+		newString = "conf\[{0}\]=(\d+) ".format(i)
+		config += newString
+	
+	nobodyMove = noMoves(k)
+	with open(stratFileName, 'r') as file:
 		for line in file :
 			if line.startswith("State: ( Process.Player )") :
 				maLigne = 1
 				nbConfig += 1
+				#print("config numero = {0} \n à la ligne {1}".format(nbConfig, line))
 				#remplissage de la conf avec maConfig.group
-				conf = getconf(re.search(config,line)) 
-			
+				conf = getconf(re.search(config,line))
 			elif maLigne == 1 : #On ne veut récupérer que la première règle
-				if re.search("Process.Goal",line) is None:
-					if(myConfigNb != nbConfig):
-						strat = int(re.search("get_confuse_strat\((\d+)\)",line).group(1))
-						add_rules(strat, maConf,n,k, filepath)#fais tout le boulot
-				else:
-					add_rules(312,maConf,n,k,filepath)#idle pour tout le monde
+				print("CCCCConfig{0}".format(nbConfig))
+				if re.search("Process.goal",line) is None:
+					strat = int(re.search("get_confuse_strat\((\d+)\)",line).group(1))
+					add_rules(nbConfig, strat, conf,n,k, filename)#fais tout le boulot
+				else:#goal reached -> nobody move
+					add_rules(nbConfig,noMoves(k),conf,n,k,filename)#idle pour tout le monde
 				maLigne = 2
+
+	print("blaaaaaaaaaaaa")
 
 
 def traduction(n,k,filename):
 	"""fais la traduction de la strategie contenue dans filename et l'écrit dans le fichier filen_k.dve"""
 
+	if not isThereAStrategy(filename):
+		return (False, ())
+	
+
 	config = ""
 	for i in range(k):
 		newString = "conf\[{0}\]=(\d+) ".format(i)
 		config += newString
-	nbConfig = 0
-
 
 	dveFileString = "file{0}_{1}.dve".format(n,k)
 	dveFile = open(dveFileString, "w")
@@ -75,7 +90,7 @@ def traduction(n,k,filename):
 	state start, end;
 	init start;
 	trans""")
-
+	
 
 	#1 first read of the stretgies file
 	# we obtain all possible initial configurations -> we obtain the initializerProcess transitions
@@ -85,7 +100,7 @@ def traduction(n,k,filename):
 	confListe=[]
 	with open(filename,'r')as stratFile:
 		for line in stratFile:
-			if line.startswith("State: ( Process.Player ) ") and "stratOK=5" in line:
+			if line.startswith("State: ( Process.Player ) "):
 				step = 1
 				nbConfig+=1
 				#remplissage de la conf avec maConfig.group
@@ -119,21 +134,31 @@ def traduction(n,k,filename):
 		#	else:
 		#		print(line)
 
-	#on recupère les configurations qui n'ont pas été vues interressant que lorsque dans uppall on a enlevé des configuration avec k = 4 ça n'arrive que si le nombre n paircomme on s'interrresse à SP4 pas besoin
+	#2 on recupère les configurations qui n'ont pas été vues interressant que lorsque dans uppall on a enlevé des configuration avec k = 4 ça n'arrive que si le nombre n paircomme on s'interrresse à SP4 pas besoin
 	nb = 0
+	
+	RbtDveFile = "RbtFile.dve"
+	os.system("rm RbtFile.dve")
 
-	os.system("rm NoMouvRbtFile.dve")
-
-	#print("la synthese renvoir {0} configurations différentes".format(len(confListe)))
+	#print("la synthese renvoit {0} configurations différentes".format(Liste)))
 	#noMouvFile = open("noMouvRbtFile.dve","w")
+	
+	print("les conf initiales sont :")
+	for c in confListe:
+		print(c)
+	
+	print("\n\net donc il n'ya pas les confs .....")
+	for c in notHere(confListe,n,k):
+		print(c)
+
 	for anyConfig in notHere(confListe,n,k):
 		nb += 1
-		add_rule0(anyConfig,n,k,"NoMouvRbtFile.dve")
+		add_rule0(len(confListe)+nb,anyConfig,n,k,RbtDveFile)
 
 	print(nb)
 
 	#get the first strategy
-	getFirst(filename,n,k);
+	getFirst(n,k,filename,RbtDveFile);
 
 
 	for i in range(k):
@@ -156,15 +181,14 @@ process P_Rbt"""
 		Back -> RLC{effect conf[pos[num]]=conf[pos[num]]-1, 
 			conf[(pos[num]+n-1)%n]=conf[(pos[num]+n-1)%n]+1,
 			pos[num]=(pos[num]+n-1)%n;}""")
-		#TODO recupere les configurations pour mettre les positions des robots
-		if nb > 0:
-			with open("NoMouvRbtFile.dve",'r')as NoMouvFile:
-				for line in NoMouvFile:
-					dveFile.write(line)
+		#recupere les configurations pour mettre les positions des robots
+		with open(RbtDveFile,'r')as rbtFile:
+			for line in rbtFile:
+				dveFile.write(line)
 
-	if nb > 0:
-		os.remove("NoMouvRbtFile.dve")
+	#os.remove(RbtDveFile)
 	dveFile.write(""";
 	}
 system async;""")
 	dveFile.close()
+	return (True, ())

@@ -2,6 +2,7 @@ from synthNK import *
 from pprint import *
 
 def add_rule(nbConfig, view, direction, filename,n, nbView):
+		"""bla """
 		#print("view")
 		#pprint(view)
 		viewPos =  conf_to_confpos(view,n,len(view))
@@ -12,6 +13,9 @@ def add_rule(nbConfig, view, direction, filename,n, nbView):
 		for i in range(len(view)):
 			strv1 +=" && conf[({0}+pos)%n]=={1}".format(i,viewPos[i])
 			strv2 +=" && conf[(pos-{0}+n)%n]=={1}".format(i,viewPos[i])
+
+
+		print("config {0} vue {1}".format(nbConfig, nbView))
 	
 		if (nbView==0):
 			myFile.write(",\n//conf{0}\n\t".format(nbConfig))
@@ -53,6 +57,7 @@ def add_rule(nbConfig, view, direction, filename,n, nbView):
 		#return None /return /      is the same thing for a void like function
 
 def add_rules(nbConfig, strat, conf, n , k, filename):
+		print(nbConfig)
 		tabStrat = getStrat(strat,k)
 		#pprint("pour la conf: {0}, on a la strategie : {1} pour k = {2}". format(conf, strat,k))
 		#taille = len(tabStrat)

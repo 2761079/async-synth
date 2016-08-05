@@ -10,6 +10,14 @@ def getStrat(m, k):
 		m=int(m/5)
 	return tabStrat
 
+def noMoves(k):
+	"""returns an interger representing the strategy where the is k robots and none of them is willing to move"""
+	noMove = 2;
+	for i in range(k):
+		noMove  = noMove *5 +2;
+	return noMove
+
+
 def getView(indice, conf, k):
 		"""returns the view of robot indice, in the configuration conf made of k robots"""
 		view1 = [0]*k
