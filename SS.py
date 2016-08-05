@@ -736,7 +736,7 @@ void reset_all(){
 		finalStrat[i] = 0;
     	}
 	new_strat(-1);
-	stratOk=-1;
+	stratOK=-1;
 	nbViews=0;
 }
 
