@@ -17,6 +17,9 @@ def getconf(config):
 		conf.append(gp)	
 	return conf
 
+
+
+#TODO on est ici
 def getFirst(myConfigNb,n,k,path):
 	maLigne = 0
 	nbConfig = 0
@@ -40,6 +43,8 @@ def getFirst(myConfigNb,n,k,path):
 
 
 def traduction(n,k,filename):
+	"""fais la traduction de la strategie contenue dans filename et l'écrit dans le fichier filen_k.dve"""
+
 	config = ""
 	for i in range(k):
 		newString = "conf\[{0}\]=(\d+) ".format(i)
@@ -74,8 +79,6 @@ def traduction(n,k,filename):
 
 	#1 first read of the stretgies file
 	# we obtain all possible initial configurations -> we obtain the initializerProcess transitions
-	# we obtain the first strategy
-
 	step = 1
 	previousConf=False
 	nbConfig =0
@@ -119,6 +122,8 @@ def traduction(n,k,filename):
 	#on recupère les configurations qui n'ont pas été vues interressant que lorsque dans uppall on a enlevé des configuration avec k = 4 ça n'arrive que si le nombre n paircomme on s'interrresse à SP4 pas besoin
 	nb = 0
 
+	os.system("rm NoMouvRbtFile.dve")
+
 	#print("la synthese renvoir {0} configurations différentes".format(len(confListe)))
 	#noMouvFile = open("noMouvRbtFile.dve","w")
 	for anyConfig in notHere(confListe,n,k):
@@ -128,7 +133,7 @@ def traduction(n,k,filename):
 	print(nb)
 
 	#get the first strategy
-	getFirst(filename, n,k);
+	getFirst(filename,n,k);
 
 
 	for i in range(k):
