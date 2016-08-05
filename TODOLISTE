@@ -1,2 +1,16 @@
  états initiaux générés à chaque appel de MC  -> modification du fichier DVE
 	afin de pouvoir en enlever à la demande ... en asynchrone la strat peut fonctionner si on part de moins d'états initiaux...
+
+
+	Lire la sortie de divine
+		-oui ou non
+		-la trace 
+
+
+
+commandes divine :
+	divine combine modele.dve -f formule.ltl
+
+	divine verify modele.prop1.dve
+
+ecrire des commentaires

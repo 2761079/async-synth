@@ -15,7 +15,7 @@ def add_rule(nbConfig, view, direction, filename,n, nbView):
 			strv2 +=" && conf[(pos-{0}+n)%n]=={1}".format(i,viewPos[i])
 
 
-		print("config {0} vue {1}".format(nbConfig, nbView))
+		#print("config {0} vue {1}".format(nbConfig, nbView))
 	
 		if (nbView==0):
 			myFile.write(",\n//conf{0}\n\t".format(nbConfig))
@@ -26,38 +26,38 @@ def add_rule(nbConfig, view, direction, filename,n, nbView):
 			myFile.write(strv1)
 			myFile.write(""";}""")
 			myFile.write(""",
-		RLC -> Front{guard initialized == k""")
+		RLC -> Front{guard initialized == 0""")
 			myFile.write(strv2)
 			myFile.write(""";}""")
 		elif (direction == 1):#front
-			myFile.write("""RLC -> Front{guard initialized == k""")
+			myFile.write("""RLC -> Front{guard initialized == 0""")
 			myFile.write(strv1)
 			myFile.write(""";}""")
 			myFile.write(""",
-		RLC -> Back{guard initialized == k""")
+		RLC -> Back{guard initialized == 0""")
 			myFile.write(strv2)
 			myFile.write(""";}""")
 		elif (direction == 2):#idle
-			myFile.write("""RLC -> Idle{guard initialized == k""") 			
+			myFile.write("""RLC -> Idle{guard initialized == 0""") 			
 			myFile.write(strv1)
 			myFile.write(""";}""")
 			myFile.write(""",
-		RLC -> Idle{guard initialized == k""") 			
+		RLC -> Idle{guard initialized == 0""") 			
 			myFile.write(strv2)
 			myFile.write(""";}""")
 		elif (direction == 3):#desoriented
-			myFile.write("""RLC -> Front{guard initialized==k""")
+			myFile.write("""RLC -> Front{guard initialized == 0""")
 			myFile.write(strv1)
 			myFile.write(""";}""")
 			myFile.write(""",
-		RLC -> Back{guard initialized == k""")
+		RLC -> Back{guard initialized == 0""")
 			myFile.write(strv1)
 			myFile.write(""";}""")
 		myFile.close()
 		#return None /return /      is the same thing for a void like function
 
 def add_rules(nbConfig, strat, conf, n , k, filename):
-		print(nbConfig)
+		#print(nbConfig)
 		tabStrat = getStrat(strat,k)
 		#pprint("pour la conf: {0}, on a la strategie : {1} pour k = {2}". format(conf, strat,k))
 		#taille = len(tabStrat)
@@ -80,7 +80,7 @@ def add_rule0(nbConfig, conf, n,k,filename):
 		for i in range(k):
 			view1 = getView(i, conf, k)
 			#print("v1")
-			#pprint(view1)
+			#print(view1)
 			if (not isIn(view1, tabView)):			
 				tabView.append(view1)
 				add_rule(nbConfig,view1,tabStrat[len(tabView)-1],filename,n,nbView)

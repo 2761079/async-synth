@@ -35,6 +35,8 @@ def getFirst(n,k,stratFileName,filename):
 		config += newString
 	
 	nobodyMove = noMoves(k)
+	stratPy = []
+
 	with open(stratFileName, 'r') as file:
 		for line in file :
 			if line.startswith("State: ( Process.Player )") :
@@ -44,15 +46,16 @@ def getFirst(n,k,stratFileName,filename):
 				#remplissage de la conf avec maConfig.group
 				conf = getconf(re.search(config,line))
 			elif maLigne == 1 : #On ne veut récupérer que la première règle
-				print("CCCCConfig{0}".format(nbConfig))
+				#print("CCCCConfig{0}".format(nbConfig))
 				if re.search("Process.goal",line) is None:
 					strat = int(re.search("get_confuse_strat\((\d+)\)",line).group(1))
 					add_rules(nbConfig, strat, conf,n,k, filename)#fais tout le boulot
+					stratPy.append((conf, strat))
 				else:#goal reached -> nobody move
 					add_rules(nbConfig,noMoves(k),conf,n,k,filename)#idle pour tout le monde
 				maLigne = 2
-
-	print("blaaaaaaaaaaaa")
+	return stratPy
+	#print("blaaaaaaaaaaaa")
 
 
 def traduction(n,k,filename):
@@ -67,24 +70,24 @@ def traduction(n,k,filename):
 		newString = "conf\[{0}\]=(\d+) ".format(i)
 		config += newString
 
-	dveFileString = "file{0}_{1}.dve".format(n,k)
+	dveFileString = "strat.dve"
 	dveFile = open(dveFileString, "w")
 
 	dveFile.write("byte n = {0};\n".format(n))
 	dveFile.write("byte k = {0};\n".format(k))
 
-	tabString  = "byte pos[k] = {"
+	tabString  = "byte pos[{0}] = ".format(k) + "{"
 	for i in range(k-1):
 		tabString += "0,"
 	tabString+= "0};\n"
 	dveFile.write(tabString)
 
-	tabString  = "byte conf[n] = .* stratOK=5{"
+	tabString  = "byte conf[{0}] = ".format(n) +"{"
 	for i in range(n-1):
 		tabString += "0,"
 	tabString+= "0};\n"
 	dveFile.write(tabString)
-	dveFile.write("initialized = -1;\n\n")
+	dveFile.write("byte initialized = -1;\n\n")
 
 	dveFile.write("""process P_Initializer{
 	state start, end;
@@ -143,22 +146,22 @@ def traduction(n,k,filename):
 	#print("la synthese renvoit {0} configurations différentes".format(Liste)))
 	#noMouvFile = open("noMouvRbtFile.dve","w")
 	
-	print("les conf initiales sont :")
+	"""print("les conf initiales sont :")
 	for c in confListe:
 		print(c)
 	
 	print("\n\net donc il n'ya pas les confs .....")
 	for c in notHere(confListe,n,k):
-		print(c)
+		print(c)"""
 
 	for anyConfig in notHere(confListe,n,k):
 		nb += 1
 		add_rule0(len(confListe)+nb,anyConfig,n,k,RbtDveFile)
 
-	print(nb)
+	#print(nb)
 
 	#get the first strategy
-	getFirst(n,k,filename,RbtDveFile);
+	stratPy = getFirst(n,k,filename,RbtDveFile);
 
 
 	for i in range(k):
@@ -173,7 +176,7 @@ process P_Rbt"""
 		dveFile.write("""	state wait, RLC, Front, Back, Idle;
 	init wait;
 	trans
-		wait -> RLC{guard initialized = 0;},
+		wait -> RLC{guard initialized == 0;},
 		Idle -> RLC{},
 		Front -> RLC{effect conf[pos[num]]=conf[pos[num]]-1, 
 			conf[(pos[num]+1)%n]=conf[(pos[num]+1)%n]+1,
@@ -191,4 +194,4 @@ process P_Rbt"""
 	}
 system async;""")
 	dveFile.close()
-	return (True, ())
+	return (True, stratPy)
