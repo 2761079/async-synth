@@ -55,7 +55,7 @@ def AsyncSynth(C, F, n, k):
 	i, E = proc2_MC(strat, n,k)
 	strategies.add(i, (strat,E))
 	#strategies.add(0, 0)
-	print("nombre de strategies : {0}".format(len(strategies.strats)))
+	print("Nombre de strategies : {0}\nPerformance de la strategie : {1}".format(len(strategies.strats), strategies.minimum))
 	for a in strat:
 		#pr=Process(AsyncSynth, C+[a], F, n, k)
 		AsyncSynth(C+[a], F, n, k)

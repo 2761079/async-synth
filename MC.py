@@ -24,7 +24,7 @@ def MC(strat, states,n, k):
 		if "The property DOES NOT hold" in line :
 			mark = False
 
-	return (Mark, get_trace(resultat,n,k))
+	return (mark, get_trace(resultat,n,k))
 
 
 def get_trace(resultat,n,k):
