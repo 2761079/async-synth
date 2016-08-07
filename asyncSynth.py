@@ -10,13 +10,13 @@ from multiprocessing import Process
 
 def gen_init(n, k):
 	"""Genere une fois au début l'ensemble des positions initales"""
-	POS_INIT = init_states(n, k)#à completer 
+	return init_states(n, k)#à completer 
 	#faire un fichier pour generer les position init selon différentes conditions : (de base), sans les symétries, SP4....
 
 
 def set_init():
 	"""cree a partir de la lsite des positions initale un ensemble pour etre modifié"""
-	return set(POS_INIT)
+	return list(POS_INIT)
 
 
 def retire_etat_init(E, T):#à remplir 
@@ -57,14 +57,15 @@ def AsyncSynth(C, F, n, k):
 	#strategies.add(0, 0)
 	print("Nombre de strategies : {0}\nPerformance de la strategie : {1}".format(len(strategies.strats), strategies.minimum))
 	for a in strat:
-		#pr=Process(AsyncSynth, C+[a], F, n, k)
+		
 		AsyncSynth(C+[a], F, n, k)
-		"""pr.start()
-		with sem :
-			if sem.locked() :
-				pr.join()#ligne a commenter (resp décomenter) pour activer (resp desactiver) la paralellisation
-		"""
+		"""pr=Process(target=AsyncSynth, args=(C+[a], F, n, k))
+		sem.acquire()
+		pr.start()
+		pr.join()
+		sem.release()"""
 		F+=[a]
+
 
 
 #TODO main
@@ -73,8 +74,6 @@ def StartAsyncSynth(n,k):
 	ltlgathering(n,k)
 	uppaalQuery()
 
-
-	POS_INIT = init_states(n,k)
 
 	AsyncSynth([],[], n, k)
 
@@ -104,11 +103,8 @@ try:
 except:
 	sys.exit("you must give the number of robots in the arguments, and then the size of the ring ")
 
-
-POS_INIT = [] 
-gen_init(n,k)
+POS_INIT = gen_init(n,k)
 strategies = Minimum(len(POS_INIT))
-
 sem = Semaphore(1)
 
 StartAsyncSynth(n,k)

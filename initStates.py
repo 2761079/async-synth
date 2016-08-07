@@ -5,7 +5,7 @@ def init_states(n, k):
 	return to_view(cl)
 
 def sp4(n):
-	cl = take_sp4(eliminate_rotations(generate(n,4),n))
+	cl = keep_sp4(eliminate_rotations(generate(n,4),n))
 	return to_view(cl)
 
 
@@ -26,7 +26,7 @@ def config_from_view(v):
 
 def is_rotation(c):
 	cur = c
-	for i in range(len(c)):
+	for i in range(len(c)-1):
 		cur = next(cur)
 		if cur== c :
 			return True
@@ -45,7 +45,7 @@ def is_edge_edge(c, n ):
 def eliminate_rotations(cl,n):
 	ret = []
 	for c in cl:
-		if not is_rotation(c) and not is_edge_edge(c):
+		if not is_rotation(c) and not is_edge_edge(c,n):
 			ret.append(c)
 	return ret
 
@@ -61,11 +61,11 @@ def in_sp4(v):
 			return True
 		if v[2]%2==1 and v[0]%2 ==0 and v[0]<v[2]:
 			return True
-	return false
+	return False
 
 def keep_sp4(cl):
 	ret =[]
-	for i in cl :
+	for el in cl :
 		if in_sp4(el):
 			ret.append(el)
 	return ret

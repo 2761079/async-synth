@@ -14,3 +14,5 @@ commandes divine :
 	divine verify modele.prop1.dve
 
 ecrire des commentaires
+
+	faire que les noms de fichier ecrits soient toujours differents (en multithread on risuque d'avori des problemes) il faudrait le faire avec quoi comme methode

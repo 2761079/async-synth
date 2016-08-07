@@ -16,14 +16,13 @@ def MC(strat, states,n, k):
 	os.system("rm resultDivine.txt")
 
 	os.system("divine combine asyncStrat.dve -f ltlFile.ltl")
-	os.system("divine verify asyncStrat.prop1.dve > resultDivine.txt")
+	os.system("divine verify asyncStrat.prop1.dve 2> resultDivine.txt")
 
 	resultat = open("resultDivine.txt", "r")
 	mark = True
 	for line in resultat :
 		if "The property DOES NOT hold" in line :
 			mark = False
-
 	return (mark, get_trace(resultat,n,k))
 
 
