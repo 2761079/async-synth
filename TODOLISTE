@@ -16,3 +16,5 @@ commandes divine :
 ecrire des commentaires
 
 	faire que les noms de fichier ecrits soient toujours differents (en multithread on risuque d'avori des problemes) il faudrait le faire avec quoi comme methode
+
+	faire une pile à la main, car la fille donné ne semble pas marcher tres bien
