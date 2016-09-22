@@ -7,10 +7,12 @@ from initStates import init_states, sp4
 from threading import Lock, Semaphore
 from multiprocessing import Process
 from os import system
-
+import copy
 import queue
 
 import copy
+
+USE_MC = False #false : mode comptage de stratégies 
 
 def gen_init(n, k):
 	"""Genere une fois au début l'ensemble des positions initales"""
@@ -30,7 +32,9 @@ def retire_etat_init(E, T):#à remplir
 
 
 def proc_MC(S, n, k):
-	"""Calcule l'ensemble des états à retirer pour que la stratégie soit valide"""
+	"""Calcule l'ensemble des états à retirer pour que la stratégie soit valide ne marche pas encore, car on ne recupere pas la trace dans MC
+	cette fonction n'est pas encore terminée (MC ne gere pas la trace d'exécution de Divine)
+	"""
 	etats = set_init()
 	T=MC(S, etats, n, k)
 	i=0
@@ -44,26 +48,28 @@ def proc_MC(S, n, k):
 
 
 def proc2_MC(S, n, k):
-	"""retourne basiquement vrai ou faux"""
+	"""répond uniquement vrai ou faux"""
 	etats = set_init()
-	T=MC(S, etats, n, k)
-	
+	T=MC(S, etats, n, k)#retourne une paire (reusite, ensemble des etats gagnants)
+	#MC(.)[0] retourne 0 si la verification a echoue, 1 sinon
 	return 1-T[0], T[1]
 
 
-def async_synth(C, F,n, k):
-	"""parcourt l'arbre de toutes les stratégies, il stoke au passage les stratégies avec le moins d'états à retirer: n = ring_size, k = nb_robots"""
+def async_synth(C, F, n, k):
+	"""parcourt l'arbre de toutes les stratégies, il stoke au passage les stratégies avec le moins d'états à retirer: n = ring_size, k = nb_robots
+	aglorithme de base, nous prefererons utiliser la verson de Ordonancer"""
 	boolSS, strat = SS(C, F, n, k)
 	if (not boolSS): #la synthese n'a pas marché
 		return
-	#i, E = proc2_MC(strat, self.n, self.k)
-	#strategies.add(i, (strat,E))
-	strategies.add(0, 0)
+	if USE_MC :
+		i, E = proc2_MC(strat, n, k)
+		strategies.add(i, (strat,E))
+	else :
+		strategies.add(0, 0)
 	print("Nombre de strategies : {0}\nPerformance de la strategie : {1}".format(len(strategies.strats), strategies.minimum))
-	#print("Nombre de strategies : {0}\nn : {1}".format(len(strategies.strats), n))
-	
+
 	for a in strat:
-		async_synth(C[:]+[a],F[:],n ,k)
+		async_synth(copy.deepcopy(C)+[a],copy.deepcopy(F),n ,k)
 		F+=[a]
 
 
@@ -73,14 +79,13 @@ def StartAsyncSynth(n,k):
 	ltlgathering(n,k)
 	uppaalQuery()
 
-	async_synth([],[], n, k)
-	#ordonancer = Odonancer(n, k, 1)
-	#ordonancer.run()
+	#async_synth([],[], n, k)
+	ordonancer = Ordonancer(n, k, 1)
+	ordonancer.run()
 
 
 class Minimum:
-	"""chargé de stoker les stratégies les plus éficaces"""
-
+	"""chargé de stoker les stratégies les plus éficaces, c'est un début de structure pour du multithread"""
 	def __init__(self, n):
 		self.strats = list()
 		self.minimum = n
@@ -97,27 +102,10 @@ class Minimum:
 
 
 
-def async_synth_launch(q, C,F):
-	q.get().async_synth(C,F)
 
-
-
-try:
-	n = int(sys.argv[1])
-	k = int(sys.argv[2])
-except:
-	sys.exit("you must give the number of robots in the arguments, and then the size of the ring ")
-
-
-POS_INIT = gen_init(n,k)
-strategies = Minimum(len(POS_INIT))
-sem = Semaphore(1)
-StartAsyncSynth(n,k)
-
-
-
-class Odonancer:
-	"""chargé de stoker les stratégies les plus éficaces"""
+class Ordonancer:
+	"""objet pour d'une part gerer manuellement la pille d'appel (implémentation : lifo ou fifo), car on a déja eu une explosion de la pille d'appel
+		et permettra à la longue de gérer du multiprocessus, non utilisé pour le moment"""
 
 	def __init__(self, n, k ,pr):
 		self.process = list()
@@ -132,23 +120,18 @@ class Odonancer:
 		boolSS, strat = SS(C, F, self.n, self.k)
 		if (not boolSS): #la synthese n'a pas marché
 			return
-		#i, E = proc2_MC(strat, self.n, self.k)
-		#strategies.add(i, (strat,E))
-		strategies.add(0, 0)
+		if USE_MC :
+			i, E = proc2_MC(strat, self.n, self.k)
+			strategies.add(i, (strat,E))
+		else :
+			strategies.add(0, 0)
 		print("Nombre de strategies : {0}\nPerformance de la strategie : {1}".format(len(strategies.strats), strategies.minimum))
-		#print("Nombre de strategies : {0}\nn : {1}".format(len(strategies.strats), n))
-		self.add_strats(strat,C[:], F[:])
-		"""
-		with self.processingMut :
-			self.processing -= 1
-		print("a "+str(self.processing))"""
-		#self.sem.release()
+		self.add_strats(strat,copy.deepcopy(C), copy.deepcopy(F))
 
 	def add_strats(self, strat,C, F):
-		print(len(self.process))
 		F2=F[:]
 		for a in strat:
-			add=[C[:]+[a],F2[:]]
+			add=[copy.deepcopy(C)+[a],copy.deepcopy(F2)]
 			self.process.append(add)
 			F2=F2[:]+[a]
 
@@ -159,14 +142,20 @@ class Odonancer:
 		while len(self.process) != 0: #or self.processing:
 			#self.sem.acquire()
 			C,F = self.process.pop()
-			print(C)
-			print (F)
-			#print(self.process)
-			"""pr  = Process(target =async_synth_launch, args = (q, C,F))
 			
-			pr.start()
-			pr.join()
-			with self.processingMut :
-				self.processing +=1"""
+			#print(self.process)
 			self.async_synth(C[:],F[:])
-		print("fin")
+	
+
+
+try:
+	n = int(sys.argv[1])
+	k = int(sys.argv[2])
+except:
+	sys.exit("you must give the number of robots in the arguments, and then the size of the ring ")
+
+
+POS_INIT = gen_init(n,k)
+strategies = Minimum(len(POS_INIT))
+sem = Semaphore(1)
+StartAsyncSynth(n,k)

@@ -1,6 +1,7 @@
 import sys
 import os
 from trad import *
+
 """ Synchoronous synthesis call"""
 
 def getStrat(constraint):
