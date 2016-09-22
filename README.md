@@ -43,3 +43,7 @@ compiler Divine :
 and then remake DIVINE.
 
 Also please note that if you want LLVM/C/C++ support you will have to have LLVM 3.4 installed. 
+
+
+note ajouter veriftyga dans le repertoire d'execution, ou changer le répertoire d'appel.
+Divine doit etre installé comme une commande linux.
